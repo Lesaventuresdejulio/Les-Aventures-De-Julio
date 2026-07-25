@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carnets d'Altitude — récits de treks en montagne</title>
+  <meta name="description" content="Récits, chiffres et photos de treks en montagne.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="wrap">
+    <header class="site-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">N45°</span>
+        <span class="brand-name">Carnets d'Altitude</span>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html">Tous les treks</a>
+        <a href="#about">À propos</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="hero-eyebrow">Récits de sentiers, un dénivelé à la fois</p>
+      <h1>Marcher <em>haut</em>,<br>écrire <em>vrai</em>.</h1>
+      <p>Ce carnet rassemble mes treks en montagne : les chiffres du parcours, le profil du terrain, et le récit de ce qui s'est vraiment passé entre le départ et l'arrivée.</p>
+      <div class="profile-divider-slot"></div>
+    </section>
+
+    <section id="treks">
+      <div class="section-head">
+        <h2>Les treks</h2>
+        <span class="count" id="trek-count"></span>
+      </div>
+      <div class="trek-grid" id="trek-grid"></div>
+    </section>
+
+    <section id="about" style="margin-bottom:60px;">
+      <div class="section-head"><h2>À propos</h2></div>
+      <p style="max-width:60ch;">Remplacez ce paragraphe par quelques lignes sur vous : depuis quand vous marchez, ce que vous cherchez en montagne, comment vous choisissez vos itinéraires. Modifiez ce texte directement dans <code>index.html</code>.</p>
+    </section>
+
+    <footer class="site-footer">
+      <span>Carnets d'Altitude — mis à jour à la main, un trek à la fois</span>
+      <span>Fait avec HTML, CSS &amp; un peu de JavaScript</span>
+    </footer>
+  </div>
+
+  <script src="data/treks.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
