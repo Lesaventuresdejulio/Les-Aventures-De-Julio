@@ -409,3 +409,21 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--glacier); outli
   html { scroll-behavior: auto; }
   .trek-card { transition: none; }
 }
+
+{
+  slug: "gr5-Alpes",          // identifiant unique, sans espaces ni accents
+  titre: "GR5 — La Traversée Des Alpes",
+  lieu: "Alpes, France",
+  date: "Août 2025",
+  distanceKm: 600,
+  deniveleM: 30000,
+  dureeJours: 26,
+  difficulte: "Très difficile",
+  resume: "Une phrase d'accroche affichée sur la carte d'aperçu.",
+  recit: `Votre texte, sur plusieurs paragraphes.
+
+  Laissez une ligne vide entre deux paragraphes pour qu'ils
+  soient bien séparés à l'affichage.`,
+  profil: [600, 1200, 2100, 1800, 2225, 1500, 2050, 1300], // altitudes en m
+  photos: []  // laissez [] si pas encore de photos
+}
