@@ -1,0 +1,61 @@
+/* ============================================================
+   DONNÉES DES TREKS
+   ============================================================
+   Pour ajouter un nouveau trek : copiez un bloc { ... } entier,
+   collez-le dans le tableau, et modifiez les valeurs.
+   - "slug" doit être unique (utilisé dans l'URL trek.html?t=slug)
+   - "profil" est une liste d'altitudes (en mètres) qui dessine
+     le profil altimétrique. Mettez autant de points que vous
+     voulez, du départ à l'arrivée.
+   - "photos" : mettez le nom de vos fichiers images placés dans
+     le dossier /img (ex: "img/mont-blanc-1.jpg"). Tant que vous
+     n'avez pas ajouté de vraies photos, laissez le tableau vide
+     [] et une illustration de remplacement s'affichera.
+   ============================================================ */
+
+const TREKS = [
+  {
+    slug: "tour-du-mont-blanc",
+    titre: "Tour du Mont Blanc",
+    lieu: "Alpes — France, Italie, Suisse",
+    date: "Août 2025",
+    distanceKm: 170,
+    deniveleM: 10000,
+    dureeJours: 11,
+    difficulte: "Difficile",
+    resume: "Onze jours à faire le tour du toit de l'Europe, entre trois pays et une bonne dizaine de cols.",
+    recit: `Le TMB, ce n'est pas un trek, c'est une boucle qu'on referme sur soi-même. Onze jours, trois frontières, et cette sensation particulière de voir le même massif sous tous ses angles.
+
+Remplacez ce texte par votre propre récit : les rencontres, les cols qui font mal aux jambes, la météo qui change en une heure, le refuge où vous avez le mieux dormi. C'est ici que vit vraiment le blog.`,
+    profil: [1000, 1450, 1200, 2100, 2537, 1700, 1900, 2650, 1600, 2400, 2100, 1000],
+    photos: []
+  },
+  {
+    slug: "gr20-corse",
+    titre: "GR20 — Corse du Nord",
+    lieu: "Corse, France",
+    date: "Juin 2024",
+    distanceKm: 90,
+    deniveleM: 8500,
+    dureeJours: 8,
+    difficulte: "Très difficile",
+    resume: "La première moitié du GR20, réputé comme l'un des sentiers de grande randonnée les plus exigeants d'Europe.",
+    recit: `Remplacez ce texte par votre récit : les crêtes, la chaleur, les mains sur la roche dans les passages câblés, le bivouac sous les étoiles.`,
+    profil: [600, 1200, 2100, 1800, 2225, 1500, 2050, 1300],
+    photos: []
+  },
+  {
+    slug: "cervin-tour",
+    titre: "Tour du Cervin",
+    lieu: "Valais, Suisse / Vallée d'Aoste, Italie",
+    date: "Juillet 2023",
+    distanceKm: 140,
+    deniveleM: 9000,
+    dureeJours: 9,
+    difficulte: "Modéré à difficile",
+    resume: "Neuf jours autour de l'une des montagnes les plus photographiées au monde, vue sous tous les angles possibles.",
+    recit: `Remplacez ce texte par votre récit personnel de ce trek.`,
+    profil: [1600, 2200, 2800, 2400, 3000, 2600, 2900, 2100, 1600],
+    photos: []
+  }
+];
