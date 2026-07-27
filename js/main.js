@@ -117,6 +117,11 @@ function renderDetail() {
     ? trek.photos.map(src => `<div class="ph"><img src="${src}" alt="${trek.titre}" loading="lazy"></div>`).join("")
     : Array.from({ length: 4 }).map(() => `<div class="ph">Ajoutez vos photos<br>dans /img et<br>listez-les dans<br>data/treks.js</div>`).join("");
 
+  const mapHTML = trek.gpx ? `<div id="trek-map" class="trek-map"></div>` : "";
+  const elevationHTML = trek.gpx
+    ? `<div class="loading">Chargement du profil depuis le GPX…</div>`
+    : bigProfileSVG(trek.profil);
+
   root.innerHTML = `
     <a class="back-link" href="index.html">&larr; Tous les treks</a>
     <div class="detail-hero">
@@ -131,13 +136,59 @@ function renderDetail() {
       <div class="stat"><span class="n">${trek.difficulte}</span><span class="label">Difficulté</span></div>
     </div>
 
-    <div class="elevation-chart">${bigProfileSVG(trek.profil)}</div>
+    ${mapHTML}
+
+    <div class="elevation-chart" id="elevation-chart">${elevationHTML}</div>
 
     <div class="recit">${trek.recit.split("\n\n").map(p => `<p>${p}</p>`).join("")}</div>
 
     <div class="section-head"><h2>Photos</h2></div>
     <div class="gallery">${photosHTML}</div>
   `;
+
+  if (trek.gpx) {
+    initGPXMap(trek.gpx);
+  }
+}
+
+// Charge un fichier .gpx, affiche le tracé sur une carte Leaflet,
+// et reconstruit le profil altimétrique à partir des données réelles du GPX.
+function initGPXMap(gpxUrl) {
+  const map = L.map("trek-map");
+
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "&copy; OpenStreetMap contributors",
+    maxZoom: 18
+  }).addTo(map);
+
+  new L.GPX(gpxUrl, {
+    async: true,
+    marker_options: {
+      startIconUrl: "https://unpkg.com/leaflet-gpx@1.7.0/pin-icon-start.png",
+      endIconUrl: "https://unpkg.com/leaflet-gpx@1.7.0/pin-icon-end.png",
+      shadowUrl: "https://unpkg.com/leaflet-gpx@1.7.0/pin-shadow.png"
+    },
+    polyline_options: { color: "#b0592a", weight: 3.5, opacity: 0.9 }
+  })
+    .on("loaded", (e) => {
+      map.fitBounds(e.target.getBounds(), { padding: [20, 20] });
+
+      const elevData = e.target.get_elevation_data(); // [[distanceKm, elevationM], ...]
+      const chart = document.getElementById("elevation-chart");
+      if (elevData && elevData.length > 1 && chart) {
+        const elevations = elevData.map((p) => p[1]);
+        chart.innerHTML = bigProfileSVG(elevations);
+      } else if (chart) {
+        chart.innerHTML = `<div class="loading">Aucune donnée d'altitude dans ce fichier GPX</div>`;
+      }
+    })
+    .on("error", () => {
+      const chart = document.getElementById("elevation-chart");
+      if (chart) chart.innerHTML = `<div class="loading">Impossible de charger ${gpxUrl}</div>`;
+      const mapEl = document.getElementById("trek-map");
+      if (mapEl) mapEl.innerHTML = `<div class="loading">Fichier GPX introuvable — vérifiez le chemin dans data/treks.js</div>`;
+    })
+    .addTo(map);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
