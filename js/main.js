@@ -70,7 +70,7 @@ function renderHome() {
   const count = document.getElementById("trek-count");
   if (!grid) return;
 
-  if (!window.TREKS || TREKS.length === 0) {
+  if (typeof TREKS === "undefined" || TREKS.length === 0) {
     grid.innerHTML = `<div class="empty">Aucun trek pour l'instant — ajoutez-en un dans data/treks.js</div>`;
     return;
   }
@@ -103,7 +103,8 @@ function renderDetail() {
 
   const params = new URLSearchParams(window.location.search);
   const slug = params.get("t");
-  const trek = (window.TREKS || []).find(t => t.slug === slug) || TREKS[0];
+  const treksList = typeof TREKS !== "undefined" ? TREKS : [];
+  const trek = treksList.find(t => t.slug === slug) || treksList[0];
 
   if (!trek) {
     root.innerHTML = `<div class="empty">Trek introuvable. <a href="index.html">Retour à l'accueil</a></div>`;
