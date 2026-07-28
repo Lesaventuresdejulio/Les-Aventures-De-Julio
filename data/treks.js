@@ -56,6 +56,7 @@ Remplacez ce texte par votre propre récit : les rencontres, les cols qui font m
     recit: `Votre texte, sur plusieurs paragraphes.
 
 Laissez une ligne vide entre deux paragraphes pour qu'ils soient bien séparés à l'affichage.`,
+    gpx : "gpx/traversée-des-alpes.gpx",
     profil: [600, 1200, 2100, 1800, 2225, 1500, 2050, 1300],
     photos: []
   }
