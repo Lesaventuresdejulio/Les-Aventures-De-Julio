@@ -151,44 +151,59 @@ function renderDetail() {
   }
 }
 
-// Charge un fichier .gpx, affiche le tracé sur une carte Leaflet,
-// et reconstruit le profil altimétrique à partir des données réelles du GPX.
-function initGPXMap(gpxUrl) {
-  const map = L.map("trek-map");
+// Charge un fichier .gpx, en extrait le tracé et les altitudes nous-mêmes
+// (on n'utilise pas de librairie tierce pour ce calcul, pour rester robuste
+// même si certains points du GPX n'ont pas d'altitude renseignée).
+async function initGPXMap(gpxUrl) {
+  const mapEl = document.getElementById("trek-map");
+  const chartEl = document.getElementById("elevation-chart");
 
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "&copy; OpenStreetMap contributors",
-    maxZoom: 18
-  }).addTo(map);
+  try {
+    const res = await fetch(gpxUrl);
+    if (!res.ok) throw new Error("Fichier introuvable (" + res.status + ")");
+    const text = await res.text();
+    const xml = new DOMParser().parseFromString(text, "application/xml");
 
-  new L.GPX(gpxUrl, {
-    async: true,
-    marker_options: {
-      startIconUrl: "https://unpkg.com/leaflet-gpx@1.7.0/pin-icon-start.png",
-      endIconUrl: "https://unpkg.com/leaflet-gpx@1.7.0/pin-icon-end.png",
-      shadowUrl: "https://unpkg.com/leaflet-gpx@1.7.0/pin-shadow.png"
-    },
-    polyline_options: { color: "#b0592a", weight: 3.5, opacity: 0.9 }
-  })
-    .on("loaded", (e) => {
-      map.fitBounds(e.target.getBounds(), { padding: [20, 20] });
+    if (xml.querySelector("parsererror")) throw new Error("GPX mal formé");
 
-      const elevData = e.target.get_elevation_data(); // [[distanceKm, elevationM], ...]
-      const chart = document.getElementById("elevation-chart");
-      if (elevData && elevData.length > 1 && chart) {
-        const elevations = elevData.map((p) => p[1]);
-        chart.innerHTML = bigProfileSVG(elevations);
-      } else if (chart) {
-        chart.innerHTML = `<div class="loading">Aucune donnée d'altitude dans ce fichier GPX</div>`;
-      }
-    })
-    .on("error", () => {
-      const chart = document.getElementById("elevation-chart");
-      if (chart) chart.innerHTML = `<div class="loading">Impossible de charger ${gpxUrl}</div>`;
-      const mapEl = document.getElementById("trek-map");
-      if (mapEl) mapEl.innerHTML = `<div class="loading">Fichier GPX introuvable — vérifiez le chemin dans data/treks.js</div>`;
-    })
-    .addTo(map);
+    const trkpts = Array.from(xml.querySelectorAll("trkpt"));
+    if (trkpts.length === 0) throw new Error("Aucun point de trace trouvé");
+
+    const points = trkpts.map((pt) => {
+      const lat = parseFloat(pt.getAttribute("lat"));
+      const lon = parseFloat(pt.getAttribute("lon"));
+      const eleEl = pt.querySelector("ele");
+      const ele = eleEl ? parseFloat(eleEl.textContent) : null;
+      return { lat, lon, ele };
+    });
+
+    // ---- Carte + tracé ----
+    const map = L.map(mapEl);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "&copy; OpenStreetMap contributors",
+      maxZoom: 18
+    }).addTo(map);
+
+    const latlngs = points.map((p) => [p.lat, p.lon]);
+    const track = L.polyline(latlngs, { color: "#b0592a", weight: 3.5, opacity: 0.9 }).addTo(map);
+    map.fitBounds(track.getBounds(), { padding: [20, 20] });
+
+    L.circleMarker(latlngs[0], { radius: 6, color: "#1f2b24", weight: 2, fillColor: "#6b7a4f", fillOpacity: 1 })
+      .bindTooltip("Départ").addTo(map);
+    L.circleMarker(latlngs[latlngs.length - 1], { radius: 6, color: "#1f2b24", weight: 2, fillColor: "#b0592a", fillOpacity: 1 })
+      .bindTooltip("Arrivée").addTo(map);
+
+    // ---- Profil altimétrique ----
+    const elevations = points.map((p) => p.ele).filter((e) => e !== null && !Number.isNaN(e));
+    if (chartEl) {
+      chartEl.innerHTML = elevations.length > 1
+        ? bigProfileSVG(elevations)
+        : `<div class="loading">Ce fichier GPX ne contient pas de données d'altitude</div>`;
+    }
+  } catch (err) {
+    if (chartEl) chartEl.innerHTML = `<div class="loading">Impossible de charger le profil (${err.message})</div>`;
+    if (mapEl) mapEl.innerHTML = `<div class="loading">Impossible de charger la carte (${err.message})</div>`;
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
