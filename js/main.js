@@ -113,14 +113,23 @@ function renderDetail() {
 
   document.title = `${trek.titre} — Carnets d'Altitude`;
 
-  const photosHTML = (trek.photos && trek.photos.length > 0)
-    ? trek.photos.map(src => `<div class="ph"><img src="${src}" alt="${trek.titre}" loading="lazy"></div>`).join("")
-    : Array.from({ length: 4 }).map(() => `<div class="ph">Ajoutez vos photos<br>dans /img et<br>listez-les dans<br>data/treks.js</div>`).join("");
-
   const mapHTML = trek.gpx ? `<div id="trek-map" class="trek-map"></div>` : "";
   const elevationHTML = trek.gpx
     ? `<div class="loading">Chargement du profil depuis le GPX…</div>`
     : bigProfileSVG(trek.profil);
+
+  const journalHTML = (trek.journal || []).map((entry) => {
+    if (entry.type === "photo") {
+      const img = entry.src
+        ? `<img src="${entry.src}" alt="${entry.legende || trek.titre}" loading="lazy">`
+        : `<div class="ph">Ajoutez le chemin de la photo<br>dans le champ "src" de<br>cette entrée (data/treks.js)</div>`;
+      return `<figure class="journal-photo${entry.src ? "" : " placeholder"}">
+        ${img}
+        ${entry.legende ? `<figcaption>${entry.legende}</figcaption>` : ""}
+      </figure>`;
+    }
+    return `<div class="journal-text">${(entry.texte || "").split("\n\n").map((p) => `<p>${p}</p>`).join("")}</div>`;
+  }).join("");
 
   root.innerHTML = `
     <a class="back-link" href="index.html">&larr; Tous les treks</a>
@@ -140,10 +149,8 @@ function renderDetail() {
 
     <div class="elevation-chart" id="elevation-chart">${elevationHTML}</div>
 
-    <div class="recit">${trek.recit.split("\n\n").map(p => `<p>${p}</p>`).join("")}</div>
-
-    <div class="section-head"><h2>Photos</h2></div>
-    <div class="gallery">${photosHTML}</div>
+    <div class="section-head"><h2>Le carnet</h2></div>
+    <div class="journal">${journalHTML}</div>
   `;
 
   if (trek.gpx) {
