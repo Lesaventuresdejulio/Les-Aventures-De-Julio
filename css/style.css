@@ -332,6 +332,26 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--glacier); outli
   margin: 24px 0 48px;
 }
 .elevation-chart-svg { width: 100%; height: 100%; display: block; }
+
+.trek-map {
+  width: 100%;
+  height: 380px;
+  border: 1.5px solid var(--ink);
+  margin: 24px 0;
+  background: var(--paper-raised);
+  filter: saturate(0.85);
+}
+
+.elevation-chart .loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+.elevation-chart-svg { width: 100%; height: 100%; display: block; }
 .elevation-chart .area { fill: rgba(176, 89, 42, 0.16); stroke: none; }
 .elevation-chart .line { fill: none; stroke: var(--rust); stroke-width: 2.5; }
 .elevation-chart .gridline { stroke: var(--contour); stroke-width: 1; }
