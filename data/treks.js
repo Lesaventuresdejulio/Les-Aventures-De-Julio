@@ -1,3 +1,32 @@
+/* ============================================================
+   DONNÉES DES TREKS
+   ============================================================
+   Pour ajouter un nouveau trek : copiez un bloc { ... } entier,
+   collez-le dans le tableau, et modifiez les valeurs.
+
+   - "slug" doit être unique (utilisé dans l'URL trek.html?t=slug)
+   - "profil" est une liste d'altitudes (en mètres). Utilisé
+     uniquement si vous n'avez PAS de fichier gpx (voir plus bas).
+   - "gpx" (optionnel) : chemin vers un fichier .gpx déposé dans
+     le dossier /gpx (ex: "gpx/mon-trek.gpx"). Si présent, une
+     vraie carte s'affiche et le profil est calculé automatiquement
+     à partir du fichier — le champ "profil" est alors ignoré.
+   - "journal" : c'est ici que vous racontez votre trek, comme un
+     vrai carnet. C'est une LISTE d'entrées, dans l'ordre où elles
+     doivent apparaître. Chaque entrée est soit :
+
+       { type: "texte", texte: "Un paragraphe, ou plusieurs
+         séparés par une ligne vide." }
+
+       { type: "photo", src: "img/mon-trek-1.jpg", legende: "Ce
+         qu'on voit sur la photo (facultatif)" }
+
+     Mélangez-les librement : texte, photo, texte, photo, photo,
+     texte... exactement comme vous le raconteriez dans un carnet.
+     Si vous n'avez pas encore la photo, laissez src: "" — un
+     encadré de remplacement s'affichera à sa place.
+   ============================================================ */
+
 const TREKS = [
   {
     slug: "tour-du-mont-blanc",
@@ -9,11 +38,22 @@ const TREKS = [
     dureeJours: 11,
     difficulte: "Difficile",
     resume: "Onze jours à faire le tour du toit de l'Europe, entre trois pays et une bonne dizaine de cols.",
-    recit: `Le TMB, ce n'est pas un trek, c'est une boucle qu'on referme sur soi-même. Onze jours, trois frontières, et cette sensation particulière de voir le même massif sous tous ses angles.
-
-Remplacez ce texte par votre propre récit : les rencontres, les cols qui font mal aux jambes, la météo qui change en une heure, le refuge où vous avez le mieux dormi. C'est ici que vit vraiment le blog.`,
     profil: [1000, 1450, 1200, 2100, 2537, 1700, 1900, 2650, 1600, 2400, 2100, 1000],
-    photos: []
+    journal: [
+      {
+        type: "texte",
+        texte: `Le TMB, ce n'est pas un trek, c'est une boucle qu'on referme sur soi-même. Onze jours, trois frontières, et cette sensation particulière de voir le même massif sous tous ses angles.`
+      },
+      {
+        type: "photo",
+        src: "",
+        legende: "Remplacez par une de vos photos (ex: img/tmb-jour1.jpg)"
+      },
+      {
+        type: "texte",
+        texte: `Remplacez ce texte par votre propre récit : les rencontres, les cols qui font mal aux jambes, la météo qui change en une heure, le refuge où vous avez le mieux dormi. C'est ici que vit vraiment le blog.`
+      }
+    ]
   },
   {
     slug: "gr20-corse",
@@ -25,9 +65,18 @@ Remplacez ce texte par votre propre récit : les rencontres, les cols qui font m
     dureeJours: 8,
     difficulte: "Très difficile",
     resume: "La première moitié du GR20, réputé comme l'un des sentiers de grande randonnée les plus exigeants d'Europe.",
-    recit: `Remplacez ce texte par votre récit : les crêtes, la chaleur, les mains sur la roche dans les passages câblés, le bivouac sous les étoiles.`,
     profil: [600, 1200, 2100, 1800, 2225, 1500, 2050, 1300],
-    photos: []
+    journal: [
+      {
+        type: "texte",
+        texte: `Remplacez ce texte par votre récit : les crêtes, la chaleur, les mains sur la roche dans les passages câblés, le bivouac sous les étoiles.`
+      },
+      {
+        type: "photo",
+        src: "",
+        legende: ""
+      }
+    ]
   },
   {
     slug: "cervin-tour",
@@ -39,9 +88,13 @@ Remplacez ce texte par votre propre récit : les rencontres, les cols qui font m
     dureeJours: 9,
     difficulte: "Modéré à difficile",
     resume: "Neuf jours autour de l'une des montagnes les plus photographiées au monde, vue sous tous les angles possibles.",
-    recit: `Remplacez ce texte par votre récit personnel de ce trek.`,
     profil: [1600, 2200, 2800, 2400, 3000, 2600, 2900, 2100, 1600],
-    photos: []
+    journal: [
+      {
+        type: "texte",
+        texte: `Remplacez ce texte par votre récit personnel de ce trek.`
+      }
+    ]
   },
   {
     slug: "gr5-alpes",
@@ -53,11 +106,20 @@ Remplacez ce texte par votre propre récit : les rencontres, les cols qui font m
     dureeJours: 26,
     difficulte: "Très difficile",
     resume: "Une phrase d'accroche affichée sur la carte d'aperçu.",
-    recit: `Votre texte, sur plusieurs paragraphes.
-
-Laissez une ligne vide entre deux paragraphes pour qu'ils soient bien séparés à l'affichage.`,
-    gpx : "gpx/traversée-des-alpes.gpx",
+    gpx: "gpx/traversee-des-alpes.gpx",
     profil: [600, 1200, 2100, 1800, 2225, 1500, 2050, 1300],
-    photos: []
+    journal: [
+      {
+        type: "texte",
+        texte: `Votre texte, sur plusieurs paragraphes.
+
+Laissez une ligne vide entre deux paragraphes pour qu'ils soient bien séparés à l'affichage.`
+      },
+      {
+        type: "photo",
+        src: "",
+        legende: ""
+      }
+    ]
   }
 ];
