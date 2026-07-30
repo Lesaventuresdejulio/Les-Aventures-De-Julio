@@ -119,7 +119,7 @@ Laissez une ligne vide entre deux paragraphes pour qu'ils soient bien séparés 
       },
       {
         type: "photo",
-        src: "gr5-jour1.1.jpg",
+        src: "img/gr5-jour1.1.jpg",
         legende: ""
       }
       {
