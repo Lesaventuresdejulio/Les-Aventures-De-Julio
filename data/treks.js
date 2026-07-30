@@ -111,7 +111,9 @@ const TREKS = [
     journal: [
       {
         type: "texte",
-        texte: `Votre texte, sur plusieurs paragraphes.
+        texte: `Jeudi 24 Juillet 2025 - Le Grand Départ
+
+        Après une journée passée dans le train, mon aventure commence à Thonon-les-bains. Après quelques kilomètres à travers bitume et forêt, je monte vite ma tente entre deux averses. L'excitation du départ me fais complètement oublié la fine pluie qui se dépose sur ma toile.
 
 Laissez une ligne vide entre deux paragraphes pour qu'ils soient bien séparés à l'affichage.`
       },
@@ -120,6 +122,18 @@ Laissez une ligne vide entre deux paragraphes pour qu'ils soient bien séparés 
         src: "",
         legende: ""
       }
+      {
+        type: "texte",
+        texte: `Vendredi 25 Juillet 2025 - Les premiers paysages et la première tempête
+
+        La journée débute dans la forêt brumeuse puis se découvre à l'approche des alpages. Les pelouses verdoyantes qui recouvraient les crêtes laissent place aux lacs de montagne cachés autour d'importants. A l'approche du col de bise, point culminant de la journée, une famille de bouquetins se laisse doucement observer. En redescendant on peut observer le refuge de bise a côté duquel je vais sejourner ce soir. La nuit fut difficile entre les chèvres qui ne semblèrent préferer ma tente à l'herbe verdoyante et les orages qui ne cesser de rugir. 
+Laissez une ligne vide entre deux paragraphes pour qu'ils soient bien séparés à l'affichage.`
+       },
+       {
+        type: "photo",
+        src: "",
+        legende: ""
+       }
     ]
   }
 ];
